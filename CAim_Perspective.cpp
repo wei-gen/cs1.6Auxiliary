@@ -185,7 +185,7 @@ void CPerspective::PaintRect()
 			// 画的方框宽高
 			int high, width;
 			high = 25000 / f3Distance;
-			width = 11000 / f3Distance;
+			width = 10000 / f3Distance;
 
 			if (fabs(AngleX) > m_fov * 0.5)
 				continue;
@@ -201,9 +201,15 @@ void CPerspective::PaintRect()
 			WCHAR strAr[20];
 			CString str;
 			str.Format(L"距离：%.2f\0", f3Distance);
+			// wsparintf不支持浮点数格式化
+			// 需要用到cstring
 			wsprintf(strAr,L"%s", str.GetBuffer(str.GetLength()));
-			
-			TextOut(m_hdc, rect.left, rect.top, strAr, 30);
+			LPRECT lprc = (struct tagRECT*)malloc(sizeof(struct tagRECT));
+			lprc->left = rect.left;
+			lprc->right = rect.left + 100;
+			lprc->top = rect.top;
+			lprc->bottom = rect.top + 40;
+			DrawText(m_hdc, strAr, -1, lprc, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
 			Rectangle(m_hdc, rect.left, rect.top, rect.right, rect.bottom);
 		}
 	}

@@ -62,9 +62,14 @@ public:
 		m_fov = GetFov();
 		m_PaintStatus = false;
 		m_hwnd = FindWindow(szClssName,szWindowName);
-		HPEN hPen = CreatePen(PS_SOLID, 2, RGB(255, 0, 0));
+		// 设置画笔颜色，画出来的线条就是这个颜色
+		HPEN hPen = CreatePen(PS_SOLID, 2, RGB(127, 255, 0));
 		HBRUSH hBrush = (HBRUSH)GetStockObject(NULL_BRUSH);
 		m_hdc = GetDC(m_hwnd);
+		// 设置字体颜色
+		SetTextColor(m_hdc, RGB(127, 255, 0));
+		// 去除背景底色
+		SetBkMode(m_hdc, TRANSPARENT);
 		SelectObject(m_hdc, hPen);
 		SelectObject(m_hdc, hBrush);
 		// 获取屏幕客户端界面
