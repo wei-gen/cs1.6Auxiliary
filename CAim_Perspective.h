@@ -67,7 +67,7 @@ public:
 		m_hdc = GetDC(m_hwnd);
 		SelectObject(m_hdc, hPen);
 		SelectObject(m_hdc, hBrush);
-
+		// 获取屏幕客户端界面
 		GetClientRect(m_hwnd,&m_GameRect);
 		m_HalfGameWidth = (m_GameRect.right - m_GameRect.left) * 0.5;
 		m_HalfGameHigh = (m_GameRect.bottom - m_GameRect.top) * 0.5;

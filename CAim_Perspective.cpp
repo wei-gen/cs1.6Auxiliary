@@ -1,7 +1,9 @@
 #include "CAim_Perspective.h"
 #include "Memory.h"
 #include "offset.h"
+#include <locale.h>
 #include <stdio.h>
+#include <atlstr.h>
 
 
 extern HANDLE g_hProcess;
@@ -74,20 +76,6 @@ float CPerson::Get_three_distance(POS another)
 	return fDistance;
 }
 
-// 获取本地玩家阵营
-/*int CPerson::GetTeam()
-{
-	return ReadMemory_DWORD(g_hProcess, g_pcawwclconfig_mm_dll_base + BASE_ME + TEAM, NULL);
-}*/
-
-// 获取玩家阵营
-/*int CPerson::GetTeam(int nPersonnum)
-{
-	return ReadMemory_DWORD(g_hProcess, 
-		g_pcawwclconfig_mm_dll_base + BASE_ENEMY + nPersonnum * OFFSET_PERSON + TEAM, 
-		NULL);
-}*/
-
 // 是否存活
 bool CPerson::IsAlive(int n_PersonNumber)
 {
@@ -107,7 +95,6 @@ CPerson::CPerson(int nPersonNumber)
 {
 	m_nPersonNumber = nPersonNumber;
 	m_pos = GetPos(m_nPersonNumber);
-	//m_nTeam = GetTeam(nPersonNumber);
 	//其他的一些初始化工作
 }
 
@@ -117,7 +104,6 @@ CPerson::CPerson()
 	m_heart = GetHeartAngle();
 	m_pos = GetPos(0);
 	m_nPersonNumber = 0;
-	//m_nTeam = GetTeam();
 }
 
 // 获取偏移角度x
@@ -194,6 +180,7 @@ void CPerspective::PaintRect()
 			// 我的三个坐标-敌人三个坐标绝对值
 			// 三个坐标的2次幂
 			// 相加再计算平方根
+			// 算出距离
 			float f3Distance = Get_three_distance(enemy.m_pos);
 			// 画的方框宽高
 			int high, width;
@@ -210,7 +197,13 @@ void CPerspective::PaintRect()
 			rect.top = (tanf(-AngleMouse / 57.29746936176986) + tanf(AngleY / 57.29746936176986)) * m_HalfGameWidth * FovPrecent + m_HalfGameHigh;
 			rect.right = rect.left + width;
 			rect.bottom = rect.top + high;
-					
+			
+			WCHAR strAr[20];
+			CString str;
+			str.Format(L"距离：%.2f\0", f3Distance);
+			wsprintf(strAr,L"%s", str.GetBuffer(str.GetLength()));
+			
+			TextOut(m_hdc, rect.left, rect.top, strAr, 30);
 			Rectangle(m_hdc, rect.left, rect.top, rect.right, rect.bottom);
 		}
 	}
@@ -225,7 +218,7 @@ void CPerspective::StartPaint()
 	while (m_PaintStatus)
 	{
 		PaintRect();
-		Sleep(10);
+		//Sleep(200);
 		if (!m_PaintStatus)
 			break;
 	}

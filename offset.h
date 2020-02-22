@@ -1,25 +1,4 @@
 #pragma once
-#pragma once
-//pcawwclconfig_mm.dll模块
-#define BASE_ME			0x00097030
-#define BASE_ENEMY		0x10A70
-#define POS_X			0x88
-#define POS_Y			0x8C
-#define POS_Z			0x90
-#define OFFSET_PERSON	0x30		//0x30间隔，每个人的偏移
-#define TEAM			0x8			//阵营
-#define	HP				0x1E0		//血量
-
-//cstrike.exe
-#define HEART_X			0x19DB1C8
-#define HEART_Y			0x19DB1C4
-#define FOV				0x60CF24
-
-//mp.dll
-#define NUM_PERSON		0xD18EC		//游戏玩家数量
-
-#define MAX_DISTANCE	10000
-
 
 #define d_f_enemy			0x001622e4			// 获取玩家数量第一个偏移
 #define d_res_enemy			0x58				// 第二个偏移
